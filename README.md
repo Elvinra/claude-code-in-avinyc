@@ -27,31 +27,31 @@ A curated collection of Claude Code plugins for Ruby, Rails, and SaaS developmen
 
 ### Rails Development
 
-| Plugin | Description | Skills |
-|--------|-------------|--------|
-| **rspec-writer** | AI-powered RSpec test generation | `/write-test` |
-| **rails-frontend** | Hotwire, Turbo, Stimulus, Tailwind | `/hotwire`, `/tailwind` |
-| **rails-expert** | POODR and Refactoring Ruby patterns | `/rails` |
+| Plugin | "/" Commands | Auto-triggered Skills |
+|--------|--------------|----------------------|
+| **rspec-writer** | `/write-test` | write-test |
+| **rails-frontend** | `/hotwire` | hotwire, tailwind |
+| **rails-expert** | - | rails |
 
 ### Design & UX
 
-| Plugin | Description | Skills |
-|--------|-------------|--------|
-| **design-system** | UI/UX design and visual implementation | `/web-designer`, `/ux-ui` |
+| Plugin | "/" Commands | Auto-triggered Skills |
+|--------|--------------|----------------------|
+| **design-system** | `/web-design` | web-designer, ux-ui |
 
 ### Business & Writing
 
-| Plugin | Description | Skills |
-|--------|-------------|--------|
-| **saas-metrics** | SaaS unit economics and marketing analytics | `/business`, `/marketing` |
-| **tech-writer** | Technical blog posts in Flatiron style | `/write` |
+| Plugin | "/" Commands | Auto-triggered Skills |
+|--------|--------------|----------------------|
+| **saas-metrics** | `/business`, `/marketing` | business, marketing |
+| **tech-writer** | `/write` | write |
 
 ### Productivity
 
-| Plugin | Description | Skills |
-|--------|-------------|--------|
-| **compound-analyzer** | Identify automation opportunities | `/analyze` |
-| **plan-interview** | Refine plans through Socratic questioning | `/interview` |
+| Plugin | "/" Commands | Auto-triggered Skills |
+|--------|--------------|----------------------|
+| **compound-analyzer** | `/analyze` | analyze |
+| **plan-interview** | `/interview` | interview |
 
 ---
 
@@ -86,13 +86,13 @@ Modern Rails frontend development with Hotwire and Tailwind.
 # Create a Stimulus controller
 /hotwire controller dropdown toggle
 
-# Style a component
-/tailwind card with shadow and hover state
+# Tailwind knowledge auto-triggers when styling
+"Style this card with shadow and hover state"
 ```
 
-**Hotwire skill covers:** Turbo Frames, Turbo Streams, Stimulus controllers, morphing, broadcasts
+**`/hotwire` command:** Turbo Frames, Turbo Streams, Stimulus controllers, morphing, broadcasts
 
-**Tailwind skill covers:** Utility patterns, responsive design, component styling, animations
+**`tailwind` skill (auto-triggered):** Utility patterns, responsive design, component styling, animations
 
 ---
 
@@ -101,9 +101,11 @@ Modern Rails frontend development with Hotwire and Tailwind.
 Ruby and Rails best practices from the books that matter.
 
 ```bash
-# Get guidance on Rails patterns
-/rails best practice for service objects
+# Rails knowledge auto-triggers when discussing Rails
+"What's the best practice for service objects?"
 ```
+
+**`rails` skill (auto-triggered):** Applies POODR and Refactoring Ruby principles automatically when discussing Rails code.
 
 **References:**
 - Practical Object Oriented Design in Ruby (POODR) by Sandi Metz
@@ -118,15 +120,15 @@ UI/UX design expertise for building beautiful, usable interfaces.
 
 ```bash
 # Design a landing page
-/web-designer hero section for a SaaS product
+/web-design hero section for a SaaS product
 
-# Get UX guidance
-/ux-ui information architecture for settings page
+# UX knowledge auto-triggers when discussing usability
+"What's the best information architecture for a settings page?"
 ```
 
-**Web Designer:** Visual hierarchy, typography, color theory, layout systems, design aesthetics (Bauhaus, Retro, Futuristic)
+**`/web-design` command:** Visual hierarchy, typography, color theory, layout systems, design aesthetics (Bauhaus, Retro, Futuristic)
 
-**UX/UI:** Usability principles, accessibility, interaction design, information architecture
+**`ux-ui` skill (auto-triggered):** Usability principles, accessibility, interaction design, information architecture
 
 ---
 
@@ -193,14 +195,38 @@ Refine project plans through in-depth Socratic questioning.
 
 ---
 
+## Architecture: Commands vs Skills
+
+This marketplace uses both **commands** and **skills**:
+
+- **Commands** (`/command-name`): Appear in "/" autocomplete. Use for explicit actions.
+- **Skills** (auto-triggered): Loaded based on conversation context. Use for contextual knowledge.
+
+**Pattern:** Action-oriented features get both. Contextual knowledge gets skills only.
+
+| Type | "/" Autocomplete | Auto-detection | Example |
+|------|-----------------|----------------|---------|
+| Command + Skill | Yes | Yes | `/write-test`, `/analyze` |
+| Skill only | No | Yes | `rails`, `tailwind`, `ux-ui` |
+
 ## Contributing
 
 1. Fork the repository
 2. Create your plugin in `plugins/<plugin-name>/`
 3. Add `.claude-plugin/plugin.json` manifest
 4. Add skills under `skills/<skill-name>/SKILL.md`
-5. Register in `.claude-plugin/marketplace.json`
-6. Submit a pull request
+5. For action-oriented skills, add a command wrapper in `commands/<command-name>.md`:
+   ```markdown
+   ---
+   name: command-name
+   description: Brief description
+   argument-hint: "[args]"
+   ---
+
+   Invoke the plugin-name:skill-name skill for: $ARGUMENTS
+   ```
+6. Register in `.claude-plugin/marketplace.json`
+7. Submit a pull request
 
 ## License
 
