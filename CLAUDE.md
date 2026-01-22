@@ -9,8 +9,20 @@ This is a Claude Code plugin marketplace for Ruby, Rails, and SaaS development. 
 ## Repository Structure
 
 ```
+.claude/
+  hooks.json                 # Claude Code hooks (version bump reminders)
+  settings.local.json        # Local settings
+
 .claude-plugin/
   marketplace.json           # Marketplace manifest (v1.2.0)
+
+.github/
+  workflows/
+    validate-versions.yml    # CI check for version consistency
+
+scripts/
+  bump-version.sh            # Bump versions in both files
+  validate-versions.sh       # Validate version consistency
 
 plugins/
   rspec-writer/
@@ -195,11 +207,37 @@ Instructions for the skill...
 - `marketplace.json` plugins array - Should match plugin.json
 - `SKILL.md` frontmatter - No version field (not supported)
 
-**Workflow:**
+### Version Bump Tooling
+
+Three layers ensure version bumps never get forgotten:
+
+**Layer 1: Claude Code Hook** - Real-time reminder when editing plugin files
+- Configured in `.claude/hooks.json`
+- Fires on Edit/Write to `plugins/**`
+- Reminds to bump versions before you forget
+
+**Layer 2: Bump Script** - Makes the correct action easy
+```bash
+./scripts/bump-version.sh <plugin-name> <bump-type>
+
+# Examples:
+./scripts/bump-version.sh rspec-writer patch   # 1.2.0 -> 1.2.1
+./scripts/bump-version.sh design-system minor  # 1.2.0 -> 1.3.0
+./scripts/bump-version.sh rails-expert major   # 1.1.0 -> 2.0.0
+```
+Updates both `plugin.json` and `marketplace.json` atomically.
+
+**Layer 3: GitHub Actions CI** - Safety net on PRs
+- Validates version consistency between files
+- Checks if plugin files changed without version bump
+- Comments on PR with instructions if validation fails
+
+### Version Workflow
+
 1. Make changes to plugin content
-2. Bump `version` in affected `plugins/*/.claude-plugin/plugin.json` files
-3. Bump matching versions in `.claude-plugin/marketplace.json` plugins array
-4. Commit and push
+2. Run `./scripts/bump-version.sh <plugin-name> patch`
+3. Commit and push
+4. CI validates on PR
 
 ## Plugin Change Checklist
 
@@ -209,5 +247,9 @@ When modifying plugins, ensure all related files are updated:
 - [ ] Update plugin README.md with new examples
 - [ ] Update main README.md tables and examples
 - [ ] Update CLAUDE.md if conventions changed
-- [ ] Bump version in `plugins/<name>/.claude-plugin/plugin.json`
-- [ ] Bump matching version in `.claude-plugin/marketplace.json`
+- [ ] Run `./scripts/bump-version.sh <plugin-name> patch` (bumps both files)
+
+Validate before pushing:
+```bash
+./scripts/validate-versions.sh
+```

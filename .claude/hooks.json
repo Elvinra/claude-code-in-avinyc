@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "If the file that was just edited/written is inside the 'plugins/' directory (e.g., plugins/rspec-writer/*, plugins/design-system/skills/*, etc.), remind the user:\n\n**Plugin file modified.** Remember to bump the version:\n\n```bash\n./scripts/bump-version.sh <plugin-name> patch\n```\n\nThis updates both `plugin.json` and `marketplace.json`.\n\nIf the file is NOT inside plugins/, do not output anything."
+          }
+        ]
+      }
+    ]
+  }
+}

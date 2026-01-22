@@ -226,7 +226,7 @@ This marketplace uses both **commands** and **skills**:
    Invoke the plugin-name:skill-name skill for: $ARGUMENTS
    ```
 6. Register in `.claude-plugin/marketplace.json`
-7. **Bump version** in `plugin.json` and matching entry in `marketplace.json` (required for updates to propagate)
+7. **Bump version** with `./scripts/bump-version.sh <plugin-name> patch` (required for updates to propagate)
 8. Submit a pull request
 
 ## License
