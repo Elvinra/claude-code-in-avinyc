@@ -165,3 +165,24 @@ Instructions for the skill...
 - Pattern files go in subdirectories under the skill
 - Action-oriented skills get command wrappers for "/" discoverability
 - Contextual knowledge skills remain skill-only (auto-triggered)
+
+## Versioning
+
+**Critical:** Claude Code detects updates by comparing `version` in each `plugin.json`, NOT the marketplace metadata version. If you don't bump plugin versions, updates won't propagate to users.
+
+**When to bump versions:**
+- Adding new commands or skills
+- Modifying skill instructions or behavior
+- Changing plugin.json metadata
+- Any change users should receive via auto-update
+
+**Where versions live:**
+- `plugin.json` - Required, triggers update detection
+- `marketplace.json` plugins array - Should match plugin.json
+- `SKILL.md` frontmatter - No version field (not supported)
+
+**Workflow:**
+1. Make changes to plugin content
+2. Bump `version` in affected `plugins/*/.claude-plugin/plugin.json` files
+3. Bump matching versions in `.claude-plugin/marketplace.json` plugins array
+4. Commit and push
