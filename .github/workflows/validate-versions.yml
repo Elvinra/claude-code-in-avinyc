@@ -6,11 +6,13 @@ on:
     paths:
       - 'plugins/**'
       - '.claude-plugin/marketplace.json'
+      - '.claude/settings.local.json'
   push:
     branches: [main]
     paths:
       - 'plugins/**'
       - '.claude-plugin/marketplace.json'
+      - '.claude/settings.local.json'
 
 jobs:
   validate:
@@ -34,6 +36,9 @@ jobs:
 
           ./scripts/validate-versions.sh "$BASE_BRANCH"
 
+      - name: Validate settings completeness
+        run: ./scripts/validate-settings.sh
+
       - name: Comment on PR if validation fails
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
@@ -43,13 +48,21 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Plugin Version Check Failed
+              body: `## Plugin Validation Failed
 
-            Plugin files were modified but versions weren't bumped. Please run:
+            One or more checks failed. Please fix the issues:
 
+            ### Version Bump
+            If plugin files were modified, bump versions:
             \`\`\`bash
             ./scripts/bump-version.sh <plugin-name> patch
             \`\`\`
 
-            This updates both \`plugin.json\` and \`marketplace.json\` to ensure users receive updates.`
+            ### Settings Completeness
+            If plugins are missing from settings.local.json:
+            \`\`\`bash
+            ./scripts/setup-local-dev.sh
+            \`\`\`
+
+            Run \`./scripts/validate-versions.sh\` and \`./scripts/validate-settings.sh\` locally to verify.`
             })

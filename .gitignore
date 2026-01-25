@@ -1,3 +1,4 @@
 plans/
 .ai/
 .claude/*.local.json
+plugins/test-plugin/

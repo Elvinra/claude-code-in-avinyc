@@ -71,6 +71,8 @@ skills/                      # Flat skill directory for npx add-skill
 
 scripts/
   bump-version.sh            # Bump versions in both files
+  setup-local-dev.sh         # Configure local development
+  validate-settings.sh       # Validate settings.local.json
   validate-versions.sh       # Validate version consistency
 
 plugins/
@@ -231,6 +233,64 @@ Instructions for the skill...
 3. If the skill is action-oriented, add a command wrapper in `plugins/<name>/commands/<command-name>.md`
 4. Register in `.claude-plugin/marketplace.json`
 5. Update README.md with plugin documentation
+
+## Local Development
+
+To test plugin changes locally before pushing:
+
+### Quick Setup
+
+```bash
+./scripts/setup-local-dev.sh
+```
+
+This configures Claude Code to load plugins from your local directory instead of GitHub.
+
+### What It Does
+
+1. **Updates `~/.claude/plugins/known_marketplaces.json`** - Changes source from `github` to `directory` pointing to your local path
+2. **Updates `.claude/settings.local.json`** - Enables all plugins from this marketplace
+
+### Manual Setup
+
+If you prefer to configure manually:
+
+1. Edit `~/.claude/plugins/known_marketplaces.json`:
+```json
+"claude-code-in-avinyc": {
+  "source": {
+    "source": "directory",
+    "path": "/path/to/claude-code-in-avinyc"
+  },
+  "installLocation": "/path/to/claude-code-in-avinyc"
+}
+```
+
+2. Add plugins to `.claude/settings.local.json`:
+```json
+{
+  "enabledPlugins": {
+    "plugin-name@claude-code-in-avinyc": true
+  }
+}
+```
+
+### Validation
+
+Check that all plugins are properly enabled:
+```bash
+./scripts/validate-settings.sh
+```
+
+### Switching Back to GitHub
+
+To revert to loading from GitHub, change `known_marketplaces.json` source back to:
+```json
+"source": {
+  "source": "github",
+  "repo": "aviflombaum/claude-code-in-avinyc"
+}
+```
 
 ## Key Conventions
 
