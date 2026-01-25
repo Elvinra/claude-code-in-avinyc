@@ -1,0 +1,13 @@
+{
+  "name": "warp-rails",
+  "description": "Bootstrap Warp terminal configuration for Rails projects with colored tabs and workflows",
+  "version": "1.0.3",
+  "author": {
+    "name": "Avi Flombaum",
+    "email": "im@avi.nyc"
+  },
+  "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
+  "repository": "https://github.com/aviflombaum/claude-code-in-avinyc",
+  "license": "MIT",
+  "keywords": ["warp", "terminal", "rails", "bootstrap", "configuration", "workflow"]
+}

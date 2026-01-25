@@ -7,7 +7,7 @@
   "repository": "https://github.com/aviflombaum/claude-code-in-avinyc",
   "metadata": {
     "description": "Claude Code plugins for Ruby and Rails development by AviNYC",
-    "version": "1.3.2"
+    "version": "1.4.0"
   },
   "plugins": [
     {
@@ -87,6 +87,15 @@
       "source": "./plugins/plan-interview",
       "description": "Refine project plans through Socratic questioning",
       "version": "1.3.2",
+      "author": { "name": "Avi Flombaum" },
+      "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
+      "license": "MIT"
+    },
+    {
+      "name": "warp-rails",
+      "source": "./plugins/warp-rails",
+      "description": "Bootstrap Warp terminal configuration for Rails projects",
+      "version": "1.0.3",
       "author": { "name": "Avi Flombaum" },
       "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
       "license": "MIT"

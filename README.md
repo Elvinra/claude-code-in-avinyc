@@ -3,7 +3,7 @@
 A curated collection of AI agent skills for Ruby, Rails, and SaaS development.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Skills](https://img.shields.io/badge/skills-11-green.svg)](#available-plugins)
+[![Skills](https://img.shields.io/badge/skills-12-green.svg)](#available-plugins)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-blueviolet.svg)](https://agentskills.io)
 
 ## Quick Start
@@ -29,6 +29,7 @@ npx add-skill aviflombaum/claude-code-in-avinyc
 /plugin install tech-writer@claude-code-in-avinyc
 /plugin install compound-analyzer@claude-code-in-avinyc
 /plugin install plan-interview@claude-code-in-avinyc
+/plugin install warp-rails@claude-code-in-avinyc
 ```
 
 ## Available Plugins
@@ -40,6 +41,7 @@ npx add-skill aviflombaum/claude-code-in-avinyc
 | [**rspec-writer**](plugins/rspec-writer/README.md) | `/rspec:write-test` | write-test |
 | [**rails-frontend**](plugins/rails-frontend/README.md) | `/hotwire` | hotwire, tailwind |
 | [**rails-expert**](plugins/rails-expert/README.md) | - | rails |
+| [**warp-rails**](plugins/warp-rails/README.md) | `/warp-rails` | bootstrap |
 
 ### Design & UX
 
@@ -200,6 +202,27 @@ Refine project plans through in-depth Socratic questioning.
 ```
 
 **Questions cover:** Technical implementation, UI/UX considerations, edge cases, tradeoffs, assumptions
+
+---
+
+### warp-rails
+
+Bootstrap Warp terminal configuration for Rails projects with colored tabs.
+
+```bash
+# Set up Warp for current project
+/warp-rails
+```
+
+**Creates launch config with tabs:**
+- Server (green) - `bin/dev` or `rails server`
+- Claude (blue) - Claude Code session
+- Shell (yellow) - Empty terminal
+- Console (magenta) - Rails console
+- Logs (cyan) - Tail development log
+- Jobs (red) - Background processor (if detected)
+
+**Auto-detects:** `bin/dev`, Sidekiq, GoodJob, SolidQueue
 
 ---
 

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-01-25
+
+### Added
+- **warp-rails**: New plugin to bootstrap Warp terminal configuration for Rails projects
+  - Creates launch configurations with colored tabs (Server, Claude, Shell, Console, Logs, Jobs)
+  - Auto-detects `bin/dev` vs `rails server`
+  - Auto-detects background job processors (Sidekiq, GoodJob, SolidQueue)
+  - Interactive tab selection via AskUserQuestion
+  - Saves to `~/.warp/launch_configurations/`
+
 ## [1.3.2] - 2025-01-25
 
 ### Added
