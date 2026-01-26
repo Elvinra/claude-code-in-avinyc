@@ -305,12 +305,39 @@ end
 
 ## Anti-Patterns to Avoid
 
+### CRITICAL: Never Use destroy_all or delete_all
+
+```ruby
+# BAD - causes ActiveRecord::InvalidForeignKey
+before { User.destroy_all }
+
+# BAD - same problem
+before { User.delete_all }
+```
+
+**Why this fails:**
+1. Rails uses transactional tests - each test runs in a transaction that rolls back
+2. Fixtures are loaded once and shared across tests
+3. Fixtures have foreign key relationships (users → payments, etc.)
+4. `destroy_all` violates FK constraints because other tables reference these records
+
+**The fix:** Don't reset state. Rely on transactional fixtures:
+
+```ruby
+# GOOD - fixtures already provide clean state per test
+let(:user) { users(:alice) }
+```
+
+### Other Anti-Patterns
+
 - Fixture proliferation (too many fixtures)
 - Excessive ERB making fixtures hard to read
 - Not documenting special-case fixtures
 - Circular dependencies in self-references
 - Using factories when fixtures suffice
 - Duplicating data instead of using references
+- Testing exact counts (fixtures affect totals)
+- Creating records that duplicate what fixtures provide
 
 ## Quality Checklist
 
