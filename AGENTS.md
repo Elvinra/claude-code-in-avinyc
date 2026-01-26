@@ -275,11 +275,16 @@ If you prefer to configure manually:
 }
 ```
 
-### Validation
+### Validation (Local Only)
 
-Check that all plugins are properly enabled:
+Check that all plugins are properly enabled in your local settings:
 ```bash
-./scripts/validate-settings.sh
+./scripts/validate-settings.sh  # Local dev only, not run in CI
+```
+
+For CI-style validation (runs in GitHub Actions):
+```bash
+./scripts/validate-versions.sh  # Version consistency check
 ```
 
 ### Switching Back to GitHub
@@ -337,8 +342,10 @@ Three layers ensure version bumps never get forgotten:
 Updates both `plugin.json` and `marketplace.json` atomically.
 
 **Layer 3: GitHub Actions CI** - Safety net on PRs
-- Validates version consistency between files
+- Validates version consistency between `plugin.json` and `marketplace.json`
 - Checks if plugin files changed without version bump
+- Validates JSON syntax for all plugin manifests
+- Verifies plugin structure (manifest + skills/commands/agents)
 - Comments on PR with instructions if validation fails
 
 ### Version Workflow
@@ -358,7 +365,7 @@ When modifying plugins, ensure all related files are updated:
 - [ ] Update CLAUDE.md if conventions changed
 - [ ] Run `./scripts/bump-version.sh <plugin-name> patch` (bumps both files)
 
-Validate before pushing:
+Validate before pushing (mirrors CI checks):
 ```bash
-./scripts/validate-versions.sh
+./scripts/validate-versions.sh  # Version consistency
 ```

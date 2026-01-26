@@ -1,6 +1,9 @@
 #!/bin/bash
 #
-# Validate settings.local.json has all plugins enabled
+# LOCAL DEVELOPMENT ONLY - Not run in CI
+#
+# Validate settings.local.json has all plugins enabled for local testing.
+# This file (.claude/settings.local.json) is gitignored and not available in CI.
 #
 # Checks that every plugin in marketplace.json has a corresponding
 # entry in .claude/settings.local.json enabledPlugins
