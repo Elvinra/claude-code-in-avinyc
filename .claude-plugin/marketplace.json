@@ -7,14 +7,14 @@
   "repository": "https://github.com/aviflombaum/claude-code-in-avinyc",
   "metadata": {
     "description": "Claude Code plugins for Ruby and Rails development by AviNYC",
-    "version": "1.5.0"
+    "version": "1.5.1"
   },
   "plugins": [
     {
       "name": "rspec-writer",
       "source": "./plugins/rspec-writer",
       "description": "AI-powered RSpec test generation for Rails applications",
-      "version": "1.4.1",
+      "version": "1.4.2",
       "author": { "name": "Avi Flombaum" },
       "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
       "license": "MIT"
