@@ -7,7 +7,7 @@
   "repository": "https://github.com/aviflombaum/claude-code-in-avinyc",
   "metadata": {
     "description": "Claude Code plugins for Ruby and Rails development by AviNYC",
-    "version": "1.4.0"
+    "version": "1.5.0"
   },
   "plugins": [
     {
@@ -96,6 +96,15 @@
       "source": "./plugins/warp-rails",
       "description": "Bootstrap Warp terminal configuration for Rails projects",
       "version": "1.0.3",
+      "author": { "name": "Avi Flombaum" },
+      "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
+      "license": "MIT"
+    },
+    {
+      "name": "monitor-config",
+      "source": "./plugins/monitor-config",
+      "description": "Configure and optimize multi-monitor setups on macOS using displayplacer",
+      "version": "1.0.1",
       "author": { "name": "Avi Flombaum" },
       "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
       "license": "MIT"

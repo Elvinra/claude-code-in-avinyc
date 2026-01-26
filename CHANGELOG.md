@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-01-26
+
+### Added
+- **monitor-config**: New plugin to configure and optimize multi-monitor setups on macOS
+  - Interactive interview process to understand physical setup and workflow
+  - Discovers connected displays via `displayplacer list`
+  - Recommends optimal resolutions, refresh rates, and orientations
+  - Saves reusable display profiles to `~/.config/display-profiles/`
+  - Added `/avinyc:monitor-config` command for slash autocomplete discoverability
+
 ## [1.4.0] - 2025-01-25
 
 ### Added
