@@ -15,14 +15,14 @@ A curated collection of AI agent skills for Ruby, Rails, and SaaS development.
 ### Any Agent (Cursor, OpenAI Codex, Gemini CLI, etc.)
 
 ```bash
-npx add-skill aviflombaum/claude-code-in-avinyc
+npx add-skill elvinra/claude-code-in-avinyc
 ```
 
 ### Claude Code
 
 ```bash
 # Add marketplace and install all plugins
-/plugin marketplace add aviflombaum/claude-code-in-avinyc
+/plugin marketplace add elvinra/claude-code-in-avinyc
 
 # Or install individual plugins
 /plugin install rspec-writer@claude-code-in-avinyc
@@ -320,5 +320,8 @@ This configures Claude Code to load plugins from your local directory instead of
 ---
 
 ## License
+
+Forked from https://github.com/aviflombaum/claude-code-in-avinyc
+Adapted for my use case
 
 MIT

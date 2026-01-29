@@ -105,8 +105,8 @@ When tests involve external services (APIs, payment gateways, etc.):
 ## Fixtures
 
 Always check existing fixtures before creating test data:
-- See @./patterns/fixtures.md for patterns
-- Access with `users(:alice)`, `recipes(:published)`
+- See @./patterns/factories.md for patterns
+- Access with `create(:user)`, `create(:article, :published)`
 - Create records only when testing uniqueness or creation
 
 ## DRY Patterns
@@ -131,7 +131,7 @@ Consult these files for detailed patterns and examples:
 - Channel specs: @./patterns/channel-specs.md
 
 ### Testing Strategies
-- Fixtures: @./patterns/fixtures.md
+- Factories: @./patterns/factories.md
 - Isolation (mocks/stubs/VCR): @./patterns/isolation.md
 - DRY patterns: @./patterns/dry-patterns.md
 

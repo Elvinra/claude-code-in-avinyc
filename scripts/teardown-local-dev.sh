@@ -13,7 +13,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 MARKETPLACE_NAME="claude-code-in-avinyc"
-GITHUB_REPO="aviflombaum/claude-code-in-avinyc"
+GITHUB_REPO="elvinra/claude-code-in-avinyc"
 KNOWN_MARKETPLACES="$HOME/.claude/plugins/known_marketplaces.json"
 
 RED='\033[0;31m'

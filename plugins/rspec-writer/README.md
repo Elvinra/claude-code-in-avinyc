@@ -58,7 +58,7 @@ Detailed patterns are available for each spec type:
 - `patterns/mailer-specs.md` - ActionMailer testing
 - `patterns/channel-specs.md` - ActionCable testing
 - `patterns/storage-specs.md` - ActiveStorage testing
-- `patterns/fixtures.md` - Fixture management
+- `patterns/factories.md` - Factories management
 - `patterns/isolation.md` - Mocks, stubs, VCR
 - `patterns/dry-patterns.md` - Shared examples, matchers
 

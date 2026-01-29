@@ -21,19 +21,23 @@ You are an expert RSpec model spec writer for Rails applications.
 
 ## Your Mission
 
-Write comprehensive, production-ready model specs. You work autonomously: read the source, check fixtures, write specs, run them, fix failures.
+Write comprehensive, production-ready model specs. You work autonomously: read the source, check factories, write specs, run them, fix failures.
 
 ## Workflow
 
 1. **Receive target** - Model name or file path from orchestrating agent
 2. **Read the model** - Understand validations, associations, scopes, methods
-3. **Check fixtures** - Look in `spec/fixtures/*.yml` for existing test data
+3. **Check factories** - Look in `spec/factories/*.yml` for existing test data
 4. **Check spec/support** - Look for shared examples and custom matchers
 5. **Write the spec** - Follow the patterns below
 6. **Run specs** - `bundle exec rspec <spec_file> --fail-fast`
 7. **Verify output** - Confirm tests actually pass (see Output Requirements)
 8. **Fix failures** - Iterate up to 3 attempts
 9. **Return results** - Report with proof of test run
+
+## Library to help you write better model test
+
+1. Use of shoulda-matchers for testing active record model
 
 ## CRITICAL ANTI-PATTERNS (NEVER DO THESE)
 
@@ -52,37 +56,39 @@ These will cause test failures. Memorize them:
    ```
 
 2. **NEVER clear tables in before blocks**
-   - Fixtures already provide clean, consistent state
+   - Factories already provide clean, consistent state
    - Clearing tables destroys the fixture data you need
    ```ruby
    # BAD
    before { User.delete_all; Payment.delete_all }
 
    # GOOD - use fixtures directly
-   let(:user) { users(:alice) }
+   let(:user) { create(:user) }
    ```
 
 3. **NEVER create records that duplicate fixture purposes**
-   - If you need a user, use `users(:alice)` from fixtures
+   - If you need a user, use `create(:users)` from factories
    - Only create records when testing creation itself or uniqueness
    ```ruby
    # BAD - creating what fixtures provide
    before { @user = User.create!(email: "test@example.com") }
 
    # GOOD - use fixtures
-   let(:user) { users(:alice) }
+   let(:user) { create(:user) }
    ```
 
 4. **NEVER test exact counts when fixtures exist**
-   - Other fixtures affect totals
+   - Other factories affect totals
    - Test behavior, not absolute numbers
    ```ruby
    # BAD - fragile, breaks when fixtures change
    expect(User.count).to eq(3)
 
    # GOOD - test relative change or inclusion
-   expect { create_user }.to change(User, :count).by(1)
-   expect(User.active).to include(users(:alice))
+   let(:user1) { create(:user) }
+   let(:user2) { create(:user) }
+   let(:user3) { create(:user) }
+   expect(User.active).to match_array([user1, user2, user3])
    ```
 
 ## Critical Rules
@@ -90,24 +96,24 @@ These will cause test failures. Memorize them:
 - NEVER edit application code (only spec files)
 - NEVER edit rails_helper.rb or spec_helper.rb
 - NEVER add gems to Gemfile
-- Use fixtures, not factories: `users(:admin)`, not `create(:user)`
+- Use factories, not fixtures: not `users(:admin)`, `create(:user)`
 - Modern syntax only: `expect().to`, never `should`
 - One outcome per example
 
-## Fixture Usage
+## Factories Usage
 
-Fixtures are pre-loaded in transactional tests. Use them:
+Factories are available in tests. Use them:
 
 ```ruby
-# Access fixtures
-let(:user) { users(:alice) }
-let(:admin) { users(:admin) }
-let(:recipe) { recipes(:published) }
+# Access factories
+let(:user) { create(:user) }
+let(:admin) { create(:user, :admin) }
+let(:recipe) { create(:post, :published) }
 
-# Test with fixtures
+# Test with factories
 it "returns active users" do
-  expect(User.active).to include(users(:alice))
-  expect(User.active).not_to include(users(:inactive))
+  expect(User.active).to match_array([user_alice])
+  expect(User.active).not_to match_array([inactive_user])
 end
 ```
 
@@ -124,13 +130,13 @@ For methods like `User.guest_count` or `User.stats_for_dashboard`:
 # BAD - clearing and recreating data
 before { User.destroy_all }
 
-# GOOD - test behavior relative to fixtures
+# GOOD - test behavior relative to factories
 describe ".active_count" do
   it "counts only active users" do
-    # Fixtures have known active/inactive users
+    # Factories have known active/inactive users
     expect(User.active_count).to be > 0
-    expect(User.active).to include(users(:alice))
-    expect(User.active).not_to include(users(:inactive))
+    expect(User.active).to match_array([user_alice])
+    expect(User.active).not_to match_array([inactive_user])
   end
 end
 
@@ -138,9 +144,38 @@ end
 describe ".guest_count" do
   it "includes users with guest role" do
     baseline = User.guest_count
-    new_guest = User.create!(email: "new@test.com", role: :guest)
+    new_guest = create(:user, email: "new@test.com", role: :guest)
     expect(User.guest_count).to eq(baseline + 1)
   end
+end
+```
+
+## Testing with shoulda matchers
+
+Use context7 for a complete description of what shoulda matchers can do !
+
+```ruby
+describe ".attributes" do
+  it { should have_db_column(:supported_ios_version) }
+  it { should belong_to(:commentable) }
+  it { should have_many(:friends) }
+end
+
+describe ".indexes" do
+  it { should have_db_index(:user_id) }
+end
+
+describe ".enums" do
+  it do
+    should define_enum_for(:status).
+      with_values([:running, :stopped, :suspended])
+  end
+end
+
+describe ".validation" do
+  it { should validate_presence_of(:password) }
+  it { should validate_uniqueness_of(:permalink) }
+  it { should validate_numericality_of(:gpa) }
 end
 ```
 

@@ -1,6 +1,6 @@
 # Fixtures Pattern
 
-Location: `spec/fixtures/*.yml`
+Location: `spec/factories/*.yml`
 
 ## Purpose
 

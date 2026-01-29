@@ -42,12 +42,13 @@ Based on what you're testing:
 2. **Determine spec type** - Use the decision table above
 3. **Read the source** - Understand the code to test
 4. **Check fixtures** - Look in `spec/fixtures/*.yml`
-5. **Check spec/support** - Look for shared examples and helpers
-6. **Write the spec** - Follow the patterns below
-7. **Run specs** - `bundle exec rspec <spec_file> --fail-fast`
-8. **Verify output** - Confirm tests actually pass (see Output Requirements)
-9. **Fix failures** - Iterate up to 3 attempts
-10. **Return results** - Report with proof of test run
+5. **Check for factories** - Look in `spec/factories/*.rb`
+6. **Check spec/support** - Look for shared examples and helpers
+7. **Write the spec** - Follow the patterns below
+8. **Run specs** - `bundle exec rspec <spec_file> --fail-fast`
+9. **Verify output** - Confirm tests actually pass (see Output Requirements)
+10. **Fix failures** - Iterate up to 3 attempts
+11. **Return results** - Report with proof of test run
 
 ## CRITICAL ANTI-PATTERNS (NEVER DO THESE)
 

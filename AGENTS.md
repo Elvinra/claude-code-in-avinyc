@@ -11,7 +11,7 @@ This is an agent skills marketplace for Ruby, Rails, and SaaS development. It co
 ### For Any Agent (Cursor, OpenAI Codex, Gemini CLI, etc.)
 
 ```bash
-npx add-skill aviflombaum/claude-code-in-avinyc
+npx add-skill elvinra/claude-code-in-avinyc
 ```
 
 This installs all skills to your agent's skills directory.
@@ -20,7 +20,7 @@ This installs all skills to your agent's skills directory.
 
 ```bash
 # Via marketplace (recommended)
-/plugin marketplace add aviflombaum/claude-code-in-avinyc
+/plugin marketplace add elvinra/claude-code-in-avinyc
 
 # Or install individual plugins
 /plugin install rspec-writer@claude-code-in-avinyc
@@ -293,7 +293,7 @@ To revert to loading from GitHub, change `known_marketplaces.json` source back t
 ```json
 "source": {
   "source": "github",
-  "repo": "aviflombaum/claude-code-in-avinyc"
+  "repo": "elvinra/claude-code-in-avinyc"
 }
 ```
 

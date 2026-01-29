@@ -10,7 +10,7 @@ Test ActiveRecord models: validations, scopes, instance/class methods, callbacks
 
 1. **One outcome per example** - Focused, clear tests
 2. **Test behavior via public API** - Never test private methods directly
-3. **Use fixtures** - `users(:admin)`, not factories
+3. **Use factories** - `create(:user, :admin)`, not fixtures
 4. **Modern syntax** - `expect().to`, not `should`
 5. **Local setup** - Keep data setup close to examples that need it
 
@@ -29,29 +29,31 @@ Test ActiveRecord models: validations, scopes, instance/class methods, callbacks
 RSpec.describe User, type: :model do
   # Happy path first
   it "is valid with required attributes" do
-    user = User.new(email: "test@example.com", name: "Test")
+    user = create(:user, email: "test@example.com", name: "Test")
     expect(user).to be_valid
   end
 
   # Validation tests
   it "requires an email" do
-    user = User.new(email: nil)
+    user = build(:user, email: nil)
     expect(user).to be_invalid
     expect(user.errors[:email]).to include("can't be blank")
   end
 
   # Scopes
   describe ".active" do
+    let(:user1) { create(:user, :active) }
+    let(:user2) { create(:user, :disabled) }
     it "returns only active users" do
-      expect(User.active).to include(users(:active))
-      expect(User.active).not_to include(users(:inactive))
+      expect(User.active).to match_array([user1])
+      expect(User.active).not_to match_array([user2])
     end
   end
 
   # Instance methods
   describe "#full_name" do
     it "combines first and last name" do
-      user = User.new(first_name: "John", last_name: "Doe")
+      user = build(:user, first_name: "John", last_name: "Doe")
       expect(user.full_name).to eq("John Doe")
     end
   end
@@ -59,7 +61,7 @@ RSpec.describe User, type: :model do
   # Predicates use be_* matcher
   describe "#new_to_site?" do
     it "indicates a new user" do
-      user = User.new(created_at: Time.current)
+      user = build(:user, created_at: Time.current)
       expect(user).to be_new_to_site
     end
   end
@@ -71,7 +73,7 @@ end
 ### Presence Validation
 ```ruby
 it "requires a nickname" do
-  user = User.new(nickname: nil)
+  user = build(:user, nickname: nil)
   expect(user).to be_invalid
   expect(user.errors[:nickname]).to include("can't be blank")
 end
@@ -80,8 +82,8 @@ end
 ### Uniqueness Validation
 ```ruby
 it "requires unique email" do
-  existing = users(:alice)
-  user = User.new(email: existing.email)
+  existing = create(:user)
+  user = build(:user, email: existing.email)
   expect(user).to be_invalid
   expect(user.errors[:email]).to include("has already been taken")
 end
@@ -90,8 +92,9 @@ end
 ### Scoped Uniqueness
 ```ruby
 it "requires unique name within organization" do
-  existing = projects(:alpha)
-  project = Project.new(
+  existing = create(:prodjct, :alpha)
+  project = build(
+    :project,
     name: existing.name,
     organization: existing.organization
   )
@@ -100,8 +103,9 @@ it "requires unique name within organization" do
 end
 
 it "allows same name in different organization" do
-  existing = projects(:alpha)
-  project = Project.new(
+  existing = create(:project, :alpha)
+  project = build(
+    :project,
     name: existing.name,
     organization: organizations(:other)
   )
@@ -112,7 +116,7 @@ end
 ### Format Validation
 ```ruby
 it "requires valid email format" do
-  user = User.new(email: "invalid")
+  user = build(:user, email: "invalid")
   expect(user).to be_invalid
   expect(user.errors[:email]).to include("is invalid")
 end
@@ -122,12 +126,16 @@ end
 
 ```ruby
 describe ".published" do
+  let(:article1) { create(:article, :published) }
+  let(:article2) { create(:article, :published) }
+  let(:article_draft) { create(:article, :draft) }
+
   it "returns published articles" do
-    expect(Article.published).to include(articles(:published))
+    expect(Article.published).to match_array([article1, article2])
   end
 
   it "excludes draft articles" do
-    expect(Article.published).not_to include(articles(:draft))
+    expect(Article.published).not_to match_array([article_draft])
   end
 
   it "returns empty when none published" do
@@ -149,12 +157,14 @@ end
 ### Class Methods
 ```ruby
 describe ".search" do
+  let(:user1) { create(:user, first_name: "alice") }
+  let(:user2) { create(:user, first_name: "bob") }
   it "finds matching records" do
-    expect(User.search("alice")).to include(users(:alice))
+    expect(User.search("alice")).to match_array([user1])
   end
 
   it "excludes non-matching records" do
-    expect(User.search("alice")).not_to include(users(:bob))
+    expect(User.search("alice")).not_to match_array([user2])
   end
 
   it "returns empty for no matches" do
@@ -167,7 +177,7 @@ end
 ```ruby
 describe "#publish!" do
   it "sets published_at timestamp" do
-    article = articles(:draft)
+    article = create(:article, :draft)
 
     freeze_time do
       article.publish!
@@ -176,7 +186,7 @@ describe "#publish!" do
   end
 
   it "changes status to published" do
-    article = articles(:draft)
+    article = create(:article, :draft)
     article.publish!
     expect(article.status).to eq("published")
   end
@@ -187,7 +197,7 @@ end
 ```ruby
 describe "#total_price" do
   it "sums line item prices" do
-    order = orders(:with_items)
+    order = create(:order, :with_items)
     expected = order.line_items.sum(&:price)
     expect(order.total_price).to eq(expected)
   end
@@ -207,14 +217,14 @@ Test callbacks through their observable effects, not the callback itself:
 describe "after_create" do
   it "sends welcome email" do
     expect {
-      User.create!(email: "new@example.com", password: "password")
+      create(:user, email: "new@example.com", password: "password")
     }.to have_enqueued_mail(UserMailer, :welcome)
   end
 end
 
 describe "before_save" do
   it "normalizes email to lowercase" do
-    user = User.new(email: "TEST@EXAMPLE.COM")
+    user = build(:user, email: "TEST@EXAMPLE.COM")
     user.save!
     expect(user.email).to eq("test@example.com")
   end
@@ -226,7 +236,7 @@ end
 - Using legacy `should` syntax
 - Testing controller/service behavior in model specs
 - Overusing top-level `before` blocks for unrelated data
-- Large shared fixtures/helpers that obscure state
+- Large shared fixtures/factories/helpers that obscure state
 - Combining many expectations that hide failing causes
 - Testing Rails internals (associations work, built-in validations work)
 - Testing private methods directly

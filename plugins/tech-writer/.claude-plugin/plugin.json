@@ -6,8 +6,8 @@
     "name": "Avi Flombaum",
     "email": "im@avi.nyc"
   },
-  "homepage": "https://github.com/aviflombaum/claude-code-in-avinyc",
-  "repository": "https://github.com/aviflombaum/claude-code-in-avinyc",
+  "homepage": "https://github.com/elvinra/claude-code-in-avinyc",
+  "repository": "https://github.com/elvinra/claude-code-in-avinyc",
   "license": "MIT",
   "keywords": ["writing", "technical", "blog", "tutorial", "documentation", "teaching", "flatiron"]
 }
